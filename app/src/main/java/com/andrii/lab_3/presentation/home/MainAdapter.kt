@@ -6,23 +6,22 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import coil.transform.CircleCropTransformation
 import com.andrii.lab_3.R
+import androidx.navigation.NavDirections
+import androidx.navigation.ActionOnlyNavDirections
+
+
 
 class MainAdapter(var charactersList:List<Character>):RecyclerView.Adapter<MainAdapter.MainViewHolder>() {
 
     inner class MainViewHolder(private val itemView: View):RecyclerView.ViewHolder(itemView){
-        fun bindData(character: Character){
-            val name = itemView.findViewById<TextView>(R.id.name)
-            val image = itemView.findViewById<ImageView>(R.id.image)
+        val name = itemView.findViewById<TextView>(R.id.name)
+        val image = itemView.findViewById<ImageView>(R.id.image)
 
-            name.text = character.name
-            image.load(character.image){
-                transformations(CircleCropTransformation())
-            }
-        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainViewHolder {
@@ -34,6 +33,14 @@ class MainAdapter(var charactersList:List<Character>):RecyclerView.Adapter<MainA
     }
 
     override fun onBindViewHolder(holder: MainViewHolder, position: Int) {
-        holder.bindData(charactersList[position])
+        val character = charactersList[position]
+        holder.name.text = character.name
+        holder.image.load(character.image){
+            transformations(CircleCropTransformation())
+        }
+        holder.itemView.setOnClickListener { view ->
+            val action = HomeFragmentDirections.actionHomeFragmentToDetailsFragment(character)
+            view.findNavController().navigate(action)
+        }
     }
 }

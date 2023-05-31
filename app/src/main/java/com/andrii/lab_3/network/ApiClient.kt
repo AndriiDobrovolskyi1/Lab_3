@@ -1,9 +1,11 @@
 package com.andrii.lab_3.network
 
 import com.andrii.lab_3.data.CharacterResponse
+import com.google.gson.Gson
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -12,20 +14,18 @@ import retrofit2.http.Query
 object ApiClient {
     private val BASE_URL = "https://rickandmortyapi.com/api/"
 
-    private val moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
-    private val retrofit: Retrofit by lazy {
-        Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            .addConverterFactory(MoshiConverterFactory.create(moshi))
-            .build()
-    }
 
-    val apiService: ApiService by lazy {
-        retrofit.create(ApiService::class.java)
-    }
+    private val retrofit = Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+
+    val apiService: ApiService = retrofit.create(ApiService::class.java)
+
 }
 
 interface ApiService {
     @GET("character")
-    fun fetchCharacters(@Query("page") page:String): CharacterResponse
+    suspend fun fetchCharacters(@Query("page") page:String): CharacterResponse
 }
