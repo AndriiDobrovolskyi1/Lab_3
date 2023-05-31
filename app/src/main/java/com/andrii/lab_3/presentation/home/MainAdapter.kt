@@ -18,7 +18,7 @@ import androidx.navigation.ActionOnlyNavDirections
 
 class MainAdapter(var charactersList:List<Character>):RecyclerView.Adapter<MainAdapter.MainViewHolder>() {
 
-    inner class MainViewHolder(private val itemView: View):RecyclerView.ViewHolder(itemView){
+    class MainViewHolder(itemView: View):RecyclerView.ViewHolder(itemView){
         val name = itemView.findViewById<TextView>(R.id.name)
         val image = itemView.findViewById<ImageView>(R.id.image)
 
@@ -28,9 +28,7 @@ class MainAdapter(var charactersList:List<Character>):RecyclerView.Adapter<MainA
         return MainViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.rv_item, parent,false))
     }
 
-    override fun getItemCount(): Int {
-        return charactersList.size
-    }
+
 
     override fun onBindViewHolder(holder: MainViewHolder, position: Int) {
         val character = charactersList[position]
@@ -43,4 +41,6 @@ class MainAdapter(var charactersList:List<Character>):RecyclerView.Adapter<MainA
             view.findNavController().navigate(action)
         }
     }
+    override fun getItemCount(): Int = charactersList.size
+
 }

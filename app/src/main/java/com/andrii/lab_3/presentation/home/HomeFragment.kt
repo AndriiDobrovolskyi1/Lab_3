@@ -11,9 +11,10 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.andrii.lab_3.R
 import com.andrii.lab_3.data.Character
+import com.andrii.lab_3.databinding.FragmentHomeBinding
 
 class HomeFragment : Fragment() {
-
+    private lateinit var binding:FragmentHomeBinding
     private lateinit var viewModel: HomeViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,18 +28,18 @@ class HomeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false)
+        binding = FragmentHomeBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val recyclerView = view.findViewById<RecyclerView>(R.id.charactersRv)
-        recyclerView.layoutManager = GridLayoutManager(context, 2)
+
+        binding.charactersRv.layoutManager = GridLayoutManager(context, 2)
         viewModel.getCharacters(1)
         viewModel.characters.observe(viewLifecycleOwner){characters->
 
-            recyclerView.adapter = MainAdapter(characters)
+            binding.charactersRv.adapter = MainAdapter(characters)
         }
     }
 }

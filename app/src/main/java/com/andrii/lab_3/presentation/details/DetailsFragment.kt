@@ -10,11 +10,13 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 
 import com.andrii.lab_3.R
+import com.andrii.lab_3.databinding.FragmentDetailsBinding
+import com.andrii.lab_3.databinding.FragmentHomeBinding
 import com.bumptech.glide.Glide
 
 
 class DetailsFragment : Fragment() {
-
+    private lateinit var binding: FragmentDetailsBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -24,26 +26,21 @@ class DetailsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_details, container, false)
+        binding = FragmentDetailsBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val args: DetailsFragmentArgs by navArgs ()
         val character = args.transfer
-        val name: TextView = view.findViewById(R.id.nameCharacter)
-        val image: ImageView = view.findViewById(R.id.imageView)
-        val gender: TextView = view.findViewById(R.id.gender)
-        val status: TextView = view.findViewById(R.id.status)
-        val type: TextView = view.findViewById(R.id.type)
-        name.text = character.name
-        gender.text = character.gender
-        status.text = character.status
-        type.text = character.type
+        binding.nameCharacter.text = character.name
+        binding.gender.text = character.gender
+        binding.status.text = character.status
+        binding.type.text = character.type
         Glide.with(view)
             .load(character.image)
-            .into(image)
+            .into(binding.imageView)
     }
 
 }
